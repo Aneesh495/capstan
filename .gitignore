@@ -1,0 +1,43 @@
+# Git Ignore for Capstan
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+*.egg-info/
+.venv/
+env/
+
+# Ruby and Puppet artifacts
+.bundle/
+vendor/bundle/
+coverage/
+pkg/
+spec/fixtures/manifests/
+spec/fixtures/modules/
+.librarian/
+.tmp/
+junit/
+log/
+*.log
+
+# C build artifacts
+build/
+*.o
+*.dylib
+*.a
+bin/libcapstan.so
+bin/libcapstan.dylib
+
+# OS and Editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~

@@ -1,0 +1,12 @@
+# Capstan: Git Attributes
+* text=auto eol=lf
+*.pp text eol=lf
+*.rb text eol=lf
+*.py text eol=lf
+*.c text eol=lf
+*.h text eol=lf
+*.md text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.sh text eol=lf
