@@ -1,0 +1,25 @@
+---
+# Hiera version 5 configuration for Capstan edge hierarchy
+version: 5
+
+defaults:
+  datadir: hieradata
+  data_hash: yaml_data
+
+hierarchy:
+  - name: "Per-node specific configuration"
+    path: "nodes/%{trusted.certname}.yaml"
+
+  - name: "Edge deployment tier"
+    path: "tiers/%{facts.capstan_tier}.yaml"
+
+  - name: "Functional role profile"
+    path: "roles/%{facts.role}.yaml"
+
+  - name: "Operating system distribution overrides"
+    paths:
+      - "os/%{facts.os.name}-%{facts.os.release.major}.yaml"
+      - "os/%{facts.os.family}.yaml"
+
+  - name: "Global common configuration defaults"
+    path: "common.yaml"
