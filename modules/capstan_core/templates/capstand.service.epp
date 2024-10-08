@@ -1,0 +1,32 @@
+<%- | String $config_file,
+      String $run_dir,
+      String $prefix
+| -%>
+[Unit]
+Description=Capstan Autonomous State Convergence Daemon
+Documentation=https://github.com/Aneesh495/capstan
+After=network.target network-online.target local-fs.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=<%= $prefix %>/bin/capstand --config <%= $config_file %>
+Restart=always
+RestartSec=3s
+LimitNOFILE=65536
+LimitMEMLOCK=infinity
+TasksMax=4096
+RuntimeDirectory=capstan
+RuntimeDirectoryMode=0755
+KillMode=mixed
+TimeoutStopSec=15s
+
+# Hardened sandboxing
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
