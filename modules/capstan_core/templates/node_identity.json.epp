@@ -1,0 +1,17 @@
+<%- | String $node_id,
+      String $cluster_name,
+      String $role,
+      String $tier,
+      String $region,
+      String $public_key_path
+| -%>
+{
+  "node_id": "<%= $node_id %>",
+  "cluster_name": "<%= $cluster_name %>",
+  "role": "<%= $role %>",
+  "tier": "<%= $tier %>",
+  "region": "<%= $region %>",
+  "public_key_path": "<%= $public_key_path %>",
+  "created_at": "<%= Timestamp().strftime('%Y-%m-%dT%H:%M:%SZ') %>",
+  "schema_version": "1.0.0"
+}
