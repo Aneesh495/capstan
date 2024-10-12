@@ -1,0 +1,26 @@
+<%- | String $journal_dir,
+      Integer $max_entries
+| -%>
+#!/usr/bin/env bash
+# Capstan Journal Rotation Utility
+# Prunes state convergence journal receipts beyond the configured retention threshold.
+set -euo pipefail
+
+JOURNAL_DIR="<%= $journal_dir %>"
+MAX_ENTRIES=<%= $max_entries %>
+
+if [ ! -d "${JOURNAL_DIR}" ]; then
+  exit 0
+fi
+
+# Count existing journal files
+current_count=$(find "${JOURNAL_DIR}" -maxdepth 1 -name "*.journal" | wc -l)
+
+if [ "${current_count}" -gt "${MAX_ENTRIES}" ]; then
+  excess=$((current_count - MAX_ENTRIES))
+  echo "[Capstan] Rotating ${excess} old journal entries from ${JOURNAL_DIR}"
+  find "${JOURNAL_DIR}" -maxdepth 1 -name "*.journal" -type f -print0 | \
+    xargs -0 ls -1t | \
+    tail -n "${excess}" | \
+    xargs -I {} rm -f "{}"
+fi
