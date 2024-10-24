@@ -1,0 +1,5 @@
+<%- | Array[Integer] $isolated_cores | -%>
+# Capstan Systemd CPU Affinity Configuration
+# Keeps background services off isolated latency-critical cores
+[Manager]
+CPUAffinity=<%= ($facts['processors']['count'] ? (0..($facts['processors']['count'] - 1)).to_a - $isolated_cores : [0]).join(' ') %>
