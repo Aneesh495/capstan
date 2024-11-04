@@ -1,0 +1,15 @@
+<%- | Integer $hugepages_count | -%>
+[Unit]
+Description=Capstan Static Hugepages Pool Allocation
+DefaultDependencies=no
+After=local-fs.target
+Before=sysinit.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c 'if [ -f /proc/sys/vm/nr_hugepages ]; then echo <%= $hugepages_count %> > /proc/sys/vm/nr_hugepages; fi'
+ExecStartPost=/bin/sh -c 'if [ -d /dev/hugepages ] && ! mountpoint -q /dev/hugepages; then mount -t hugetlbfs nodev /dev/hugepages; fi'
+
+[Install]
+WantedBy=basic.target
