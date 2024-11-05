@@ -1,0 +1,10 @@
+<%- | String $io_scheduler | -%>
+# Capstan Udev Rules: Deterministic Block I/O Scheduler Selection
+# Set scheduler for NVMe solid-state storage devices
+ACTION=="add|change", KERNEL=="nvme[0-9]*n[0-9]*", ATTR{queue/scheduler}="<%= $io_scheduler %>"
+
+# Set scheduler for SATA / SCSI SSD devices
+ACTION=="add|change", KERNEL=="sd[a-z]|vd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="<%= $io_scheduler %>"
+
+# Optimize read-ahead buffer for high-throughput sequential reads
+ACTION=="add|change", KERNEL=="nvme[0-9]*n[0-9]*|sd[a-z]|vd[a-z]", ATTR{queue/read_ahead_kb}="1024"
