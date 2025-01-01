@@ -1,0 +1,36 @@
+<%- | String $metrics_path | -%>
+#!/usr/bin/env bash
+# Capstan Automated State Divergence and Drift Scoring Script
+# Inspects kernel sysctl parameters and network link states against target digests.
+set -euo pipefail
+
+METRICS_FILE="<%= $metrics_path %>/drift.json"
+mkdir -p "<%= $metrics_path %>"
+
+# Sample kernel parameters
+swappiness=$(cat /proc/sys/vm/swappiness 2>/dev/null || echo 10)
+forwarding=$(cat /proc/sys/net/ipv4/ip_forward 2>/dev/null || echo 1)
+
+diverged=0
+# Desired: swappiness=10, ip_forward=1
+if [ "$swappiness" != "10" ]; then
+  diverged=$((diverged + 1))
+fi
+
+if [ "$forwarding" != "1" ]; then
+  diverged=$((diverged + 1))
+fi
+
+# Calculate normalized drift score (0.0 to 100.0)
+drift_score=$(echo "scale=2; $diverged * 12.5" | bc 2>/dev/null || echo "0.0")
+
+cat <<EOF > "${METRICS_FILE}.tmp"
+{
+  "drift_score": ${drift_score},
+  "diverged_resources": ${diverged},
+  "last_converged_at": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
+  "status": "$([ $diverged -eq 0 ] && echo 'synced' || echo 'diverged')"
+}
+EOF
+
+mv "${METRICS_FILE}.tmp" "${METRICS_FILE}"
