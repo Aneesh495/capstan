@@ -1,0 +1,28 @@
+<%- | String $otel_endpoint | -%>
+# Capstan OpenTelemetry Collector Configuration
+receivers:
+  prometheus:
+    config:
+      scrape_configs:
+        - job_name: 'capstan-edge-nodes'
+          scrape_interval: 10s
+          static_configs:
+            - targets: ['127.0.0.1:9100']
+
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 256
+
+exporters:
+  otlp:
+    endpoint: <%= $otel_endpoint %>
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    metrics:
+      receivers: [prometheus]
+      processors: [batch]
+      exporters: [otlp]
