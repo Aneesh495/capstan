@@ -1,0 +1,30 @@
+{
+  "name": "capstan-capstan_storage",
+  "version": "1.0.0",
+  "author": "Aneesh Krishna",
+  "summary": "Resilient edge storage orchestration, ZFS datasets, LUKS2 encrypted volumes, and NVMe-oF",
+  "license": "MIT",
+  "source": "https://github.com/Aneesh495/capstan",
+  "project_page": "https://github.com/Aneesh495/capstan",
+  "issues_url": "https://github.com/Aneesh495/capstan/issues",
+  "dependencies": [
+    {
+      "name": "capstan-capstan_core",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": ["22.04", "24.04"]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": ["11", "12"]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": ["8", "9"]
+    }
+  ]
+}
