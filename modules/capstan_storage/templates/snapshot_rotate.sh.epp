@@ -1,0 +1,30 @@
+<%- | String $pool,
+      Integer $retention
+| -%>
+#!/usr/bin/env bash
+# Capstan ZFS Snapshot Rotation Utility
+set -euo pipefail
+
+POOL="<%= $pool %>"
+RETENTION=<%= $retention %>
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+if ! command -v zfs >/dev/null 2>&1; then
+  exit 0
+fi
+
+# Take snapshot of all datasets under the pool
+if zpool list "${POOL}" >/dev/null 2>&1; then
+  echo "[Capstan] Creating atomic snapshot ${POOL}@snap_${TIMESTAMP}"
+  zfs snapshot -r "${POOL}@snap_${TIMESTAMP}"
+
+  # Prune older snapshots exceeding retention
+  snaps=$(zfs list -H -o name -t snapshot -r "${POOL}" | grep "@snap_" || true)
+  count=$(echo "${snaps}" | grep -c "@snap_" || true)
+  if [ "${count}" -gt "${RETENTION}" ]; then
+    excess=$((count - RETENTION))
+    echo "${snaps}" | head -n "${excess}" | while IFS= read -r s; do
+      [ -n "$s" ] && zfs destroy -r "$s"
+    done
+  fi
+fi
