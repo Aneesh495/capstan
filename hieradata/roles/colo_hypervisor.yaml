@@ -1,0 +1,8 @@
+---
+# Role: Colocation Low-Latency Hypervisor
+capstan::role: "colo_hypervisor"
+capstan_kernel::enable_cpu_isolation: true
+capstan_kernel::isolated_cores: [4, 5, 6, 7]
+capstan_kernel::enable_hugepages: true
+capstan_kernel::hugepages_count: 4096
+capstan_kernel::io_scheduler: "none"

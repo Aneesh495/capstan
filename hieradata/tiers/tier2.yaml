@@ -1,0 +1,8 @@
+---
+# Capstan Tier 2: Standard Edge Compute Nodes
+capstan_core::convergence_seconds: 15
+capstan_telemetry::sample_interval_ms: 200
+capstan_telemetry::drift_threshold_percent: 10.0
+capstan_kernel::enable_cpu_isolation: false
+capstan_kernel::enable_hugepages: false
+capstan_security::enable_tpm_attestation: false

@@ -1,0 +1,6 @@
+---
+# Role: Compute Worker Node
+capstan::role: "compute_worker"
+capstan_workload::enable_cgroups_v2: true
+capstan_workload::default_cpu_weight: 200
+capstan_workload::default_memory_high_mb: 4096

@@ -1,0 +1,41 @@
+---
+# Capstan Global Common Hiera Defaults
+capstan::cluster_name: "edge-mesh-alpha"
+capstan::tier: "tier1"
+capstan::region: "region-us-east"
+capstan::role: "edge_gateway"
+
+# Core Daemon Parameters
+capstan_core::convergence_seconds: 10
+capstan_core::log_level: "info"
+capstan_core::api_port: 8443
+
+# Kernel Tunables
+capstan_kernel::enable_sysctl_tuning: true
+capstan_kernel::enable_numa_tuning: true
+capstan_kernel::io_scheduler: "kyber"
+
+# Network Defaults
+capstan_network::interface_name: "wg0"
+capstan_network::mesh_cidr: "10.42.0.0/16"
+capstan_network::listen_port: 51820
+capstan_network::enable_ebpf_xdp: true
+capstan_network::enable_vrf: true
+capstan_network::mtu: 1420
+
+# Security Defaults
+capstan_security::enable_seccomp: true
+capstan_security::enable_apparmor: true
+capstan_security::enable_auditd: true
+capstan_security::enable_ssh_ca: true
+capstan_security::enable_mtls: true
+
+# Telemetry Defaults
+capstan_telemetry::enable_ebpf_probes: true
+capstan_telemetry::sample_interval_ms: 100
+capstan_telemetry::drift_threshold_percent: 5.0
+
+# Storage Defaults
+capstan_storage::enable_zfs: true
+capstan_storage::zfs_pool_name: "capstan_pool"
+capstan_storage::enable_snapshots: true

@@ -1,0 +1,10 @@
+---
+# Capstan Tier 1: Low-Latency High-Assurance Edge Nodes
+capstan_core::convergence_seconds: 5
+capstan_telemetry::sample_interval_ms: 50
+capstan_telemetry::drift_threshold_percent: 2.5
+capstan_kernel::enable_cpu_isolation: true
+capstan_kernel::isolated_cores: [2, 3]
+capstan_kernel::enable_hugepages: true
+capstan_kernel::hugepages_count: 2048
+capstan_security::enable_tpm_attestation: true

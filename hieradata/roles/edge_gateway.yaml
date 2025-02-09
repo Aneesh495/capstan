@@ -1,0 +1,6 @@
+---
+# Role: Edge Gateway
+capstan::role: "edge_gateway"
+capstan_gateway::ingress_port: 443
+capstan_gateway::backend_port: 8080
+capstan_network::enable_vrf: true

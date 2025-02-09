@@ -1,0 +1,8 @@
+---
+# Role: Distributed Storage Node
+capstan::role: "storage_node"
+capstan_storage::enable_zfs: true
+capstan_storage::enable_luks: true
+capstan_storage::enable_nvme_of: true
+capstan_storage::enable_snapshots: true
+capstan_storage::snapshot_retention: 14

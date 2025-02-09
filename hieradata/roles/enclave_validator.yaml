@@ -1,0 +1,7 @@
+---
+# Role: Secure Enclave Validator
+capstan::role: "enclave_validator"
+capstan_security::enable_tpm_attestation: true
+capstan_security::enable_seccomp: true
+capstan_security::enable_apparmor: true
+capstan_security::enable_auditd: true
