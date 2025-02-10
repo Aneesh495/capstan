@@ -1,0 +1,11 @@
+{
+  "name": "capstan-profile",
+  "version": "1.0.0",
+  "author": "Aneesh Krishna",
+  "summary": "Capstan technology profiles implementing business and architectural abstractions",
+  "license": "MIT",
+  "source": "https://github.com/Aneesh495/capstan",
+  "project_page": "https://github.com/Aneesh495/capstan",
+  "issues_url": "https://github.com/Aneesh495/capstan/issues",
+  "dependencies": []
+}
