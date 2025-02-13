@@ -1,0 +1,11 @@
+{
+  "name": "capstan-role",
+  "version": "1.0.0",
+  "author": "Aneesh Krishna",
+  "summary": "Capstan top-level node business roles for catalog assignment",
+  "license": "MIT",
+  "source": "https://github.com/Aneesh495/capstan",
+  "project_page": "https://github.com/Aneesh495/capstan",
+  "issues_url": "https://github.com/Aneesh495/capstan/issues",
+  "dependencies": []
+}
