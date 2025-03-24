@@ -14,6 +14,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 from capstand.config import CapstanConfig
 from capstand.engine.loop import ConvergenceEngine
 from capstand.compiler.bridge import PuppetCompilerBridge
+from capstand.tui.dashboard import run_tui
 
 def cmd_status(args, config: CapstanConfig):
     print("=================================================================")
@@ -76,6 +77,9 @@ def cmd_cluster(args, config: CapstanConfig):
     print("=================================================================")
     return 0
 
+def cmd_top(args, config: CapstanConfig):
+    return run_tui(once=True)
+
 def cmd_audit(args, config: CapstanConfig):
     print("=================================================================")
     print(f"  CAPSTAN STATE AUDIT LEDGER: {config.node_id}")
@@ -96,6 +100,8 @@ def main():
     subparsers.add_parser("apply", help="Execute immediate atomic state convergence pass")
     subparsers.add_parser("cluster", help="Display Raft consensus and WireGuard peer mesh")
     subparsers.add_parser("audit", help="Verify Merkle state tree receipts and ledger integrity")
+    subparsers.add_parser("top", help="Launch live terminal ASCII dashboard")
+    subparsers.add_parser("tui", help="Launch live terminal ASCII dashboard")
 
     args = parser.parse_args()
     config = CapstanConfig.from_file(args.config)
@@ -106,6 +112,8 @@ def main():
         "apply": cmd_apply,
         "cluster": cmd_cluster,
         "audit": cmd_audit,
+        "top": cmd_top,
+        "tui": cmd_top,
     }
 
     cmd = args.subcommand or "status"
