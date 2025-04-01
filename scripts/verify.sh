@@ -54,7 +54,13 @@ fi
 echo ""
 echo "[Step 5/5] Running pytest test suite..."
 if [ -d tests ]; then
-  python3 -m pytest tests -v
+  if command -v pytest >/dev/null 2>&1; then
+    pytest tests -v
+  elif [ -x "$HOME/.local/bin/pytest" ]; then
+    "$HOME/.local/bin/pytest" tests -v
+  else
+    python3 -m unittest discover tests -v
+  fi
 else
   echo "Tests directory not present yet; skipping test execution."
 fi
