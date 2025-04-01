@@ -4,16 +4,14 @@ Provides local status, cluster health, and manual convergence triggers.
 """
 
 import json
-import asyncio
-from http.server import BaseHTTPRequestHandler
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Tuple
 from capstand.engine.loop import ConvergenceEngine
 
 class InspectionApiHandler:
     def __init__(self, engine: ConvergenceEngine):
         self.engine = engine
 
-    def handle_request(self, method: str, path: str, body: Optional[bytes] = None) -> Tuple_Response:
+    def handle_request(self, method: str, path: str, body: Optional[bytes] = None) -> Tuple[int, Dict[str, Any]]:
         method = method.upper()
 
         if method == "GET" and path == "/health":
@@ -38,8 +36,3 @@ class InspectionApiHandler:
             return (200, {"status": "converged", "receipt": receipt.to_dict()})
 
         return (404, {"error": "Not Found", "path": path})
-
-class Tuple_Response:
-    def __init__(self, status_code: int, payload: Dict[str, Any]):
-        self.status_code = status_code
-        self.payload = payload
