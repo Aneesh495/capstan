@@ -12,12 +12,12 @@ echo "================================================================="
 
 # 1. Check for forbidden dash characters (strict ASCII hyphens only)
 echo ""
-echo "[Step 1/5] Checking for forbidden dash characters..."
+echo "[Step 1/7] Checking for forbidden dash characters..."
 python3 scripts/check_no_em_dashes.py
 
 # 2. Validate all Puppet manifests
 echo ""
-echo "[Step 2/5] Validating Puppet manifests..."
+echo "[Step 2/7] Validating Puppet manifests..."
 manifest_count=0
 if command -v puppet >/dev/null 2>&1; then
   while IFS= read -r -d '' manifest; do
@@ -31,7 +31,7 @@ fi
 
 # 3. Validate Python files syntax
 echo ""
-echo "[Step 3/5] Validating Python syntax..."
+echo "[Step 3/7] Validating Python syntax..."
 python_count=0
 while IFS= read -r -d '' pyfile; do
   python3 -m py_compile "$pyfile"
@@ -39,20 +39,20 @@ while IFS= read -r -d '' pyfile; do
 done < <(find . -type f -name "*.py" -not -path "*/.git/*" -not -path "*/build/*" -not -path "*/.venv/*" -print0)
 echo "Validated ${python_count} Python source files without syntax errors."
 
-# 4. Compile native C components if Makefile exists
+# 4. Compile native C components and run C kernel tests
 echo ""
-echo "[Step 4/5] Building native C extensions..."
+echo "[Step 4/7] Building and testing native C extensions..."
 if [ -f Makefile ]; then
   make clean >/dev/null 2>&1 || true
-  make all
-  echo "Native C components compiled successfully."
+  make test
+  echo "Native C components compiled and verified successfully."
 else
   echo "No root Makefile found; skipping C compilation."
 fi
 
 # 5. Run Python test suite
 echo ""
-echo "[Step 5/5] Running pytest test suite..."
+echo "[Step 5/7] Running pytest test suite..."
 if [ -d tests ]; then
   if command -v pytest >/dev/null 2>&1; then
     pytest tests -v
@@ -61,9 +61,22 @@ if [ -d tests ]; then
   else
     python3 -m unittest discover tests -v
   fi
-else
-  echo "Tests directory not present yet; skipping test execution."
 fi
+
+# 6. Run Ruby RSpec tests
+echo ""
+echo "[Step 6/7] Running Ruby RSpec tests..."
+if command -v rspec >/dev/null 2>&1; then
+  rspec modules/capstan_core/spec/classes/init_spec.rb --format documentation
+fi
+
+# 7. Execute CLI Sanity Checks
+echo ""
+echo "[Step 7/7] Validating Capstan CLI entrypoints..."
+./bin/capstan status >/dev/null
+./bin/capstan plan >/dev/null
+./bin/capstan top >/dev/null
+echo "Capstan operator CLI validated successfully."
 
 echo ""
 echo "================================================================="
